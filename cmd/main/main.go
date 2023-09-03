@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/IvanStukalov/TimeHack-Backend"
 	"log"
 )
 
