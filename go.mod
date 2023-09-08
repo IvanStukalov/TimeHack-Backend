@@ -2,7 +2,11 @@ module github.com/IvanStukalov/TimeHack-Backend
 
 go 1.20
 
-require github.com/jackc/pgx/v4 v4.18.1
+require (
+	github.com/gorilla/mux v1.8.0
+	github.com/jackc/pgx/v4 v4.18.1
+	github.com/mailru/easyjson v0.7.7
+)
 
 require (
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
@@ -15,7 +19,6 @@ require (
 	github.com/jackc/puddle v1.3.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/lib/pq v1.10.9 // indirect
-	github.com/mailru/easyjson v0.7.7 // indirect
 	golang.org/x/crypto v0.6.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 )
