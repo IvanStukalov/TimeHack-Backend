@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
+	userRepository "github.com/IvanStukalov/TimeHack-Backend/internal/pkg/user/repo"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/IvanStukalov/TimeHack-Backend"
 	"log"
 )
 
@@ -15,5 +15,6 @@ func main() {
 	}
 	defer pool.Close()
 
-	userRepo :=
+	userRepo := userRepository.NewRepo(pool)
+	userRepo.GetUsers(context.Background())
 }
