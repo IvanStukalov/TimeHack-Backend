@@ -2,12 +2,13 @@ package main
 
 import (
 	"context"
-	userHandler "github.com/IvanStukalov/TimeHack-Backend/internal/pkg/user/delivery"
+	userDelivery "github.com/IvanStukalov/TimeHack-Backend/internal/pkg/user/delivery"
 	userRepository "github.com/IvanStukalov/TimeHack-Backend/internal/pkg/user/repo"
 	userUseCase "github.com/IvanStukalov/TimeHack-Backend/internal/pkg/user/usecase"
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"log"
+	"net/http"
 )
 
 func main() {
@@ -21,14 +22,13 @@ func main() {
 
 	userRepo := userRepository.NewRepo(pool)
 	userUC := userUseCase.NewUseCase(userRepo)
-	userH := userHandler.NewHandler(userUC)
+	userH := userDelivery.NewUserHandler(userUC)
 
 	api := muxRoute.PathPrefix("/api").Subrouter()
 	{
-		user := api.PathPrefix("/user").Subrouter()
-		{
-			user.HandleFunc("/")
-		}
+		api.HandleFunc("/users", userH.GetAllUsers).Methods(http.MethodGet)
 	}
 
+	http.Handle("/", muxRoute)
+	log.Print(http.ListenAndServe(":8000", muxRoute))
 }

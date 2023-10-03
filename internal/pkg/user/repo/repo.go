@@ -2,10 +2,9 @@ package repo
 
 import (
 	"context"
-	"fmt"
+	"github.com/IvanStukalov/TimeHack-Backend/internal/models"
 	"github.com/IvanStukalov/TimeHack-Backend/internal/pkg/user"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"log"
 )
 
 type repoPostgres struct {
@@ -16,22 +15,24 @@ func NewRepo(conn *pgxpool.Pool) user.Repository {
 	return &repoPostgres{Conn: conn}
 }
 
-func (r *repoPostgres) GetAllUsers(ctx context.Context) {
+func (r *repoPostgres) GetAllUsers(ctx context.Context) ([]models.User, error) {
+	var users []models.User
+
 	sql := `SELECT * FROM "user"`
 	rows, err := r.Conn.Query(ctx, sql)
 	if err != nil {
-		log.Fatal(err)
+		return users, err
 	}
 
-	var id int
-	var login string
-	var name string
-	var pass string
-	for rows.Next() {
-		err = rows.Scan(&id, &login, &name, &pass)
+	for i := 0; rows.Next(); i++ {
+		user := models.User{}
+		err = rows.Scan(&user.ID, &user.Login, &user.Username, &user.PasswordHash)
 		if err != nil {
-			log.Fatal(err)
+			return users, err
 		}
-		fmt.Println(id, login, name, pass)
+
+		users = append(users, user)
 	}
+
+	return users, nil
 }

@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"github.com/IvanStukalov/TimeHack-Backend/internal/models"
 	"github.com/IvanStukalov/TimeHack-Backend/internal/pkg/user"
 )
 
@@ -13,6 +14,6 @@ func NewUseCase(repo user.Repository) user.UseCase {
 	return &UseCase{repo: repo}
 }
 
-func (u *UseCase) GetAllUsers(ctx context.Context) {
-	u.repo.GetAllUsers(ctx)
+func (u *UseCase) GetAllUsers(ctx context.Context) ([]models.User, error) {
+	return u.repo.GetAllUsers(ctx)
 }
